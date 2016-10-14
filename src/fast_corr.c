@@ -51,9 +51,9 @@ double calc_corr_at_R(double R,double*k,double*P,int Nk,int N,double h){
   return sum/(R*R*R*PI*PI);
 }
 
-int calc_corr(double*k,double*P,int Nk,double*R,double*xi,int NR){
-  int N = 200; //Arbitrary
-  double h = 0.005; //Arbitrary
+int calc_corr(double*k,double*P,int Nk,double*R,double*xi,int NR,int N, double h){
+  //int N = 200; //Arbitrary
+  //double h = 0.005; //Arbitrary
   int i;
   for(i=0;i<NR;i++){
     xi[i] = calc_corr_at_R(R[i],k,P,Nk,N,h);
