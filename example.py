@@ -5,7 +5,8 @@ It is compared to how one might use the hankel.py
 package. My implementation is consistently faster
 for the linear power spectrum and sometimes
 slightly slower for the nonlinear
-power spectrum.
+power spectrum when performing serially.
+When run with OMP turned on it is always faster.
 
 On top of this, it makes assumptions about the power
 spectrum at very small and very large scales, which
