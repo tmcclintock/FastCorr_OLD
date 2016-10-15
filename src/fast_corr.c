@@ -52,6 +52,8 @@ double calc_corr_at_R(double R,double*k,double*P,int Nk,int N,double h){
 int calc_corr(double*k,double*P,int Nk,double*R,double*xi,int NR,int N, double h){
   int i;
 
+#pragma omp parallel shared(R,xi,k,P,Nk,N,h)
+#pragma omp for
   for(i=0;i<NR;i++)
     xi[i] = calc_corr_at_R(R[i],k,P,Nk,N,h);
   

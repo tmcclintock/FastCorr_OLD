@@ -22,9 +22,9 @@ import fast_corr
 import numpy as np
 import matplotlib.pyplot as plt
 
-k = np.genfromtxt("test_data/klin.txt")
-p = np.genfromtxt("test_data/plin.txt")
-NR = 200
+k = np.genfromtxt("test_data/knl.txt")
+p = np.genfromtxt("test_data/pnl.txt")
+NR = 500
 R = np.linspace(1,120,NR)
 
 N,h = 300,0.005
