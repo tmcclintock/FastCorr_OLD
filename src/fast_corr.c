@@ -6,57 +6,54 @@
 #define PI 3.14159265358979
 
 //The power spectrum
-double get_P(double x,double R,double*k,double*P,int Nk,gsl_spline*Pspl,gsl_inter_accel*acc){
-  double kmin, kmax = k[0],k[Nk-1];
+double get_P(double x,double R,double*k,double*P,int Nk,gsl_spline*Pspl,gsl_interp_accel*acc){
+  double ki = x/R;
+  double kmin = k[0];
+  double kmax = k[Nk-1];
   double alpha,A;
-  if (x/R < kmin){
+  if (ki < kmin){
     alpha = log(P[1]/P[0])/log(k[1]/k[0]);
     A = P[0]/pow(k[0],alpha);
-    return A*pow(x/R,alpha);
-  }else if(x/R > kmax){
-    alpha = log(P[N-1]/P[N-2])/log(k[N-1]/k[N-2]);
-    A = P[N-1]/pow(k[N-1],alpha);
-    return A*pow(x/R,alpha);
+    return A*pow(ki,alpha);
+  }else if(ki > kmax){
+    alpha = log(P[Nk-1]/P[Nk-2])/log(k[Nk-1]/k[Nk-2]);
+    A = P[Nk-1]/pow(k[Nk-1],alpha);
+    return A*pow(ki,alpha);
   }//Assume power laws at ends
-  return gsl_spline_eval(Pspl,x/R,acc);
+  return gsl_spline_eval(Pspl,ki,acc);
 }
 
 double calc_corr_at_R(double R,double*k,double*P,int Nk,int N,double h){
-  double*zeros = (double*)malloc(N*sizeof(double));
-  double*phi = (double*)malloc(N*sizeof(double));
-  double*x = (double*)malloc(N*sizeof(double));
-  double*dphi = (double*)malloc(N*sizeof(double));
-  double*w = (double*)malloc(N*sizeof(double));
-  double*term = (double*)malloc(N*sizeof(double));
-
+  double zero,psi,x,t,dpsi,f,PIsinht;
+  double PI_h = PI/h;
+  double PI_2 = PI/2.;
   gsl_spline*Pspl = gsl_spline_alloc(gsl_interp_cspline,Nk);
-  gsl_spline_init(spline,k,P,Nk);
+  gsl_spline_init(Pspl,k,P,Nk);
   gsl_interp_accel*acc= gsl_interp_accel_alloc();
 
   double sum = 0;
   int i;
   for(i=0;i<N;i++){
-    zeros[i] = i+1;
-    phi[i] = h*zeros[i]*tanh(PI*sinh(h*zeros[i])/2.);
-    x[i] = phi[i]*PI/h;
-    dphi[i] = (PI*x[i]*cosh(x[i])+sinh(PI*sinh(x[i])))/(1+cosh(PI*sinh(x[i])));
-    w[i] = cos(x[i])*sin(x[i])/(x[i]*cos(x[i])-sin(x[i]));
-    Pi = get_P(x[i],R,k,P,Nk,Pspl,acc);
-    term[i] = w[i]*x[i]*x[i]*Pi*dphi[i];
-    sum += PI*term[i];
+    zero = i+1;
+    psi = h*zero*tanh(sinh(h*zero)*PI_2);
+    x = psi*PI_h;
+    t = h*zero;
+    PIsinht = PI*sinh(t);
+    dpsi = (PI*t*cosh(t)+sinh(PIsinht))/(1+cosh(PIsinht));
+    if (dpsi!=dpsi) dpsi=1.0;
+    f = x*get_P(x,R,k,P,Nk,Pspl,acc);
+    sum += f*sin(x)*dpsi;
   }
 
-  free(zeros),free(phi),free(x),free(dphi),free(w),free(term);
-  gsl_spline_free(spline),gsl_interp_accel_free(acc);
-  return sum/(R*R*R*PI*PI);
+  gsl_spline_free(Pspl),gsl_interp_accel_free(acc);
+  return sum/(R*R*R*PI);
 }
 
 int calc_corr(double*k,double*P,int Nk,double*R,double*xi,int NR,int N, double h){
-  //int N = 200; //Arbitrary
-  //double h = 0.005; //Arbitrary
   int i;
-  for(i=0;i<NR;i++){
+
+  for(i=0;i<NR;i++)
     xi[i] = calc_corr_at_R(R[i],k,P,Nk,N,h);
-  }
+  
   return 0;
 }
