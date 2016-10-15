@@ -15,11 +15,11 @@ double get_P(double x,double R,double*k,double*P,int Nk,gsl_spline*Pspl,gsl_inte
     alpha = log(P[1]/P[0])/log(k[1]/k[0]);
     A = P[0]/pow(k[0],alpha);
     return A*pow(ki,alpha);
-  }else if(ki > kmax){
+  }else if (ki > kmax){
     alpha = log(P[Nk-1]/P[Nk-2])/log(k[Nk-1]/k[Nk-2]);
     A = P[Nk-1]/pow(k[Nk-1],alpha);
     return A*pow(ki,alpha);
-  }//Assume power laws at ends
+  }// Assume power laws at ends
   return gsl_spline_eval(Pspl,ki,acc);
 }
 
