@@ -13,8 +13,8 @@ CFLAGS = -fPIC
 OFLAGS = -shared
 endif
 
-INCL = -I/home/tmcclintock/code/gsl/include/ -O3
-LIBS = -lgsl -lgslcblas -L/home/tmcclintock/code/gsl/lib -lm -O3
+INCL = -I/${GSLI} -O3
+LIBS = -lgsl -lgslcblas -L/${GSLL} -lm -O3
 .SUFFIXES : .c .o
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCL) -c $< -o $@

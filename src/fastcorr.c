@@ -2,7 +2,6 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <omp.h>
 
 #define PI 3.14159265358979
 
@@ -15,23 +14,21 @@
   k: wavenumber - units in either h/Mpc or Mpc^-1
   P: power spectrum - units in either (h/Mpc)^3 or Mpc^-3
   Nk: number of k and P points
+  alpha: power law indices - first element is low-k, second element is high-k
+  A: power law amplitude - first element is low-k, second element is high-k
   Psl: a spline of P(k)
   acc: a spline accelerator
  */
 double get_P(double x,double R,double*k,double*P,int Nk,
+	     double*alpha,double*A,
 	     gsl_spline*Pspl,gsl_interp_accel*acc){
   double ki = x/R;
   double kmin = k[0];
   double kmax = k[Nk-1];
-  double alpha,A;
   if (ki < kmin){
-    alpha = log(P[1]/P[0])/log(k[1]/k[0]);
-    A = P[0]/pow(k[0],alpha);
-    return A*pow(ki,alpha);
+    return A[0]*pow(ki,alpha[0]);
   }else if (ki > kmax){
-    alpha = log(P[Nk-1]/P[Nk-2])/log(k[Nk-1]/k[Nk-2]);
-    A = P[Nk-1]/pow(k[Nk-1],alpha);
-    return A*pow(ki,alpha);
+    return A[1]*pow(ki,alpha[1]);
   }// Assume power laws at ends
   return gsl_spline_eval(Pspl,ki,acc);
 }
@@ -46,19 +43,22 @@ double get_P(double x,double R,double*k,double*P,int Nk,
   N: number of roots of j_0 to evaluate
   h: step size for the quadrature routine
   x: locations in kR space to evaluate the integrand
+  alpha: power law indices - first element is low-k, second element is high-k
+  A: power law amplitude - first element is low-k, second element is high-k
   sinx: precalculated sin(x)
   dpsi: precalculated function dpsi(x) (see Ogata et al. 2005)
  */
 double calc_corr_at_R(double R,double*k,double*P,
 		      int Nk,int N,double h,
 		      double*x,double*sinx,double*dpsi,
+		      double*alpha,double*A,
 		      gsl_spline*Pspl,gsl_interp_accel*acc){
   double f;
 
   double sum = 0;
   int i;
   for(i=0;i<N;i++){
-    f = x[i]*get_P(x[i],R,k,P,Nk,Pspl,acc);
+    f = x[i]*get_P(x[i],R,k,P,Nk,alpha,A,Pspl,acc);
     sum += f*sinx[i]*dpsi[i];
   }
 
@@ -94,6 +94,24 @@ int calc_domain(int N,double h,double*x,double*sinx,double*dpsi){
 }
 
 /*
+  Compute the power law behavior of the power spectrum
+  at its ends.
+
+  k: wavenumber - units in either h/Mpc or Mpc^-1
+  P: power spectrum - units in either (h/Mpc)^3 or Mpc^-3
+  Nk: number of k and P points
+  alpha: power law indices - first element is low-k, second element is high-k (output)
+  A: power law amplitude - first element is low-k, second element is high-k (output)
+ */
+int calc_power_law(double*k,double*P,int Nk,double*alpha,double*A){
+  alpha[0] = log(P[1]/P[0])/log(k[1]/k[0]);
+  A[0] = P[0]/pow(k[0],alpha[0]);
+  alpha[1] = log(P[Nk-1]/P[Nk-2])/log(k[Nk-1]/k[Nk-2]);
+  A[1] = P[Nk-1]/pow(k[Nk-1],alpha[1]);
+  return 0;
+}
+
+/*
   A function call to interface with FastCorr.py.
 
   k: wavenumber - units in either h/Mpc or Mpc^-1
@@ -115,9 +133,12 @@ int calc_corr(double*k,double*P,int Nk,double*R,double*xi,
   double*x=(double*)malloc(N*sizeof(double));
   double*sinx=(double*)malloc(N*sizeof(double));
   double*dpsi=(double*)malloc(N*sizeof(double));
+  double*alpha=(double*)malloc(2*sizeof(double));
+  double*A=(double*)malloc(2*sizeof(double));
   status = calc_domain(N,h,x,sinx,dpsi);
+  status|= calc_power_law(k,P,Nk,alpha,A);
   for(i=0;i<NR;i++)
-    xi[i] = calc_corr_at_R(R[i],k,P,Nk,N,h,x,sinx,dpsi,Pspl,acc);
+    xi[i] = calc_corr_at_R(R[i],k,P,Nk,N,h,x,sinx,dpsi,alpha,A,Pspl,acc);
   
   gsl_spline_free(Pspl),gsl_interp_accel_free(acc);
   return 0;
