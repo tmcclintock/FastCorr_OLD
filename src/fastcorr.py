@@ -8,7 +8,7 @@ import ctypes
 from ctypes import c_double,c_int,POINTER,cdll
 
 def calc_corr(R,k,P,N=200,h=0.005):
-    cclib = cdll.LoadLibrary("src/c_fast_corr.so")
+    cclib = cdll.LoadLibrary("src/c_fastcorr.so")
     ccc = cclib.calc_corr
     ccc.restype = c_int
 
@@ -35,5 +35,5 @@ def calc_corr(R,k,P,N=200,h=0.005):
     result = ccc(k_in,P_in,Nk,R_in,xi_in,NR,N,h)
 
     if result != 0:
-        raise Exception("Error message recieved in fast_corr.py")
+        raise Exception("Error message recieved in fastcorr.py")
     return xi

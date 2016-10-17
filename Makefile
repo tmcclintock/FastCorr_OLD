@@ -1,4 +1,4 @@
-OBJS = src/fast_corr.o
+OBJS = src/fastcorr.o
 
 CC = gcc
 ifdef notshared
@@ -8,13 +8,13 @@ CFLAGS =
 OFLAGS =
 endif
 else
-EXEC = src/c_fast_corr.so
+EXEC = src/c_fastcorr.so
 CFLAGS = -fPIC
 OFLAGS = -shared
 endif
 
-INCL = -I/home/tom/code/gsl/include/ -fopenmp -O3
-LIBS = -lgsl -lgslcblas -L/home/tom/code/gsl/lib -lm -fopenmp -O3
+INCL = -I/home/tmcclintock/code/gsl/include/ -O3
+LIBS = -lgsl -lgslcblas -L/home/tmcclintock/code/gsl/lib -lm -O3
 .SUFFIXES : .c .o
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCL) -c $< -o $@
@@ -27,5 +27,5 @@ $(EXEC): $(OBJS)
 .PHONY : clean
 
 clean:
-	rm -f $(OBJS) main.exe src/c_fast_corr.so
-	rm -f *~
+	rm -f $(OBJS) main.exe src/c_fastcorr.so
+	rm -f src/*~ src/*.pyc
