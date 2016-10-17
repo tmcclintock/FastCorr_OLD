@@ -1,4 +1,4 @@
-OBJS = src/fastcorr.o
+OBJS = fastcorr.o
 
 CC = gcc
 ifdef notshared
@@ -8,7 +8,7 @@ CFLAGS =
 OFLAGS =
 endif
 else
-EXEC = src/c_fastcorr.so
+EXEC = _fastcorr.so
 CFLAGS = -fPIC
 OFLAGS = -shared
 endif
@@ -27,5 +27,4 @@ $(EXEC): $(OBJS)
 .PHONY : clean
 
 clean:
-	rm -f $(OBJS) main.exe src/c_fastcorr.so
-	rm -f src/*~ src/*.pyc
+	rm -f $(OBJS) *.pyc main.exe _fastcorr.so

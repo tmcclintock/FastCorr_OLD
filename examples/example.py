@@ -1,11 +1,9 @@
-import sys
-sys.path.insert(0,"src/")
 import fastcorr
 import numpy as np
 
 #Load in a power spectrum
-knl = np.genfromtxt("test_data/knl.txt")
-pnl = np.genfromtxt("test_data/pnl.txt")
+knl = np.genfromtxt("../test_data/knl.txt")
+pnl = np.genfromtxt("../test_data/pnl.txt")
 
 #Define the radial locations
 NR = 1000

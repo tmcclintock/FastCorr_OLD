@@ -1,3 +1,8 @@
+# DistUtils things
+*.egg-info/
+build/
+dist/
+
 # Emacs backup files
 *~
 

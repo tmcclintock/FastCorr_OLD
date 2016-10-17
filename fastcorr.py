@@ -4,8 +4,9 @@ This interfaces through c_types so that the user
 doesn't have to.
 """
 import numpy as np
-import ctypes
+import os, inspect
 from ctypes import c_double,c_int,POINTER,cdll
+sopath = os.path.join(os.path.dirname(__file__),"_fastcorr.so")
 
 """
 Calculate the correlation function.
@@ -17,7 +18,7 @@ N: number of roots of j_0 to evaluate
 h: step size for the quadrature routine
 """
 def calc_corr(R,k,P,N=300,h=0.005):
-    cclib = cdll.LoadLibrary("src/c_fastcorr.so")
+    cclib = cdll.LoadLibrary(sopath)
     ccc = cclib.calc_corr
     ccc.restype = c_int
 

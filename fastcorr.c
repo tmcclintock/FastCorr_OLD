@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define PI 3.14159265358979
+#define PI 3.1415926535897
 
 /*
   This is the integrand. It is a cubic spline of the power spectrum
