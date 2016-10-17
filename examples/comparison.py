@@ -24,10 +24,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 plt.rc('text',usetex=True, fontsize=20)
 
-klin = np.genfromtxt("test_data/klin.txt")
-plin = np.genfromtxt("test_data/plin.txt")
-knl = np.genfromtxt("test_data/knl.txt")
-pnl = np.genfromtxt("test_data/pnl.txt")
+klin = np.genfromtxt("../test_data/klin.txt")
+plin = np.genfromtxt("../test_data/plin.txt")
+knl = np.genfromtxt("../test_data/knl.txt")
+pnl = np.genfromtxt("../test_data/pnl.txt")
 
 #Define the domain
 NR = 1000
