@@ -7,13 +7,22 @@ import numpy as np
 import ctypes
 from ctypes import c_double,c_int,POINTER,cdll
 
-def calc_corr(R,k,P,N=200,h=0.005):
+"""
+Calculate the correlation function.
+
+R: tangential radial distance - units in either Mpc/h or Mpc
+k: wavenumber - units in either h/Mpc or Mpc^-1
+P: power spectrum - units in either (h/Mpc)^3 or Mpc^-3
+N: number of roots of j_0 to evaluate
+h: step size for the quadrature routine
+"""
+def calc_corr(R,k,P,N=300,h=0.005):
     cclib = cdll.LoadLibrary("src/c_fastcorr.so")
     ccc = cclib.calc_corr
     ccc.restype = c_int
 
     """
-    Arguments are:
+    Argument order:
     k,P,Nk,
     R,xi,NR,
     N,h
@@ -36,4 +45,5 @@ def calc_corr(R,k,P,N=200,h=0.005):
 
     if result != 0:
         raise Exception("Error message recieved in fastcorr.py")
+    #Return the correlation function. It is of length len(R)
     return xi
