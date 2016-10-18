@@ -23,7 +23,9 @@ python setup.py install
 ```
 
 And if you care about keeping the root directory clean
+```
 python setup.py clean
+```
 
 Running
 -------
