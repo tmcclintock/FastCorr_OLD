@@ -140,6 +140,7 @@ int calc_corr(double*k,double*P,int Nk,double*R,double*xi,
   for(i=0;i<NR;i++)
     xi[i] = calc_corr_at_R(R[i],k,P,Nk,N,h,x,sinx,dpsi,alpha,A,Pspl,acc);
   
+  free(x),free(sinx),free(dpsi),free(alpha),free(A);
   gsl_spline_free(Pspl),gsl_interp_accel_free(acc);
   return 0;
 }
