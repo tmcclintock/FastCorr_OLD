@@ -1,4 +1,5 @@
-# FastCorr
+FastCorr
+========
 This is a fast implementation of a j_0 spherical hankel transform 
 in order to create matter-matter correlation functions from a power spectrum.
 The implementation is based off of the Ogata 2005 and its implementation
@@ -9,16 +10,21 @@ and the j_0 spherical bessel function. This allows the roots and
 weights to be computed more quickly than in the generalized
 hankel transformation algorithms.
 
-# Dependencies
+Dependencies
+------------
 numpy
 GSL
 
-# Installation
+Installation
+------------
 From the FastCorr directory, run
+```
 python setup.py install
+```
 
 And if you care about keeping the root directory clean
 python setup.py clean
 
-# Running
+Running
+-------
 Please look at examples/example.py for an example of how to run.
