@@ -48,4 +48,4 @@ approximately 0.05 seconds each.
 
 Running the extended_example.py code produces the following
 
-![alt text](https://github.com/tmcclintock/FastCorr/figures/figure_1.png)
+![alt text](https://github.com/tmcclintock/FastCorr/blob/master/figures/figure_1.png)
