@@ -30,6 +30,22 @@ And if you care about keeping the root directory clean
 python setup.py clean
 ```
 
-Running
+Usage
 -------
 Please look at examples/example.py for an example of how to run.
+
+In order to calculate, for instance, a correlation function all
+you need to do is
+```python
+xi = fastcorr.calc_corr(R,k,P)
+```
+where R is an array of radii, k is an array of wavenumbers,
+and P is an array of the power spectrum.
+
+The code can be used to calculate either the correlation function,
+Xi_2 or Xi_4. On an intel ASUS X550L with an intel i5 these take
+approximately 0.05 seconds each.
+
+Running the extended_example.py code produces the following
+
+![alt text](https://github.com/tmcclintock/FastCorr/figures/figure_1.png)
