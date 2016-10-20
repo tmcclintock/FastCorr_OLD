@@ -35,13 +35,13 @@ R = np.linspace(.1,120,NR)
 
 #The number of roots and the step size
 #Not necessary to define
-N,h = 300,0.005
+N,h = 900,0.001
 
 #Do the linear comparison
 start = time.time()
 xi_lin = fastcorr.calc_corr(R,klin,plin,N,h)
 end = time.time()
-print "fastcorr LIN time:",end-start
+print "fastcorr LIN time: %.3f"%(end-start)
 
 xi_lin2 = np.zeros_like(xi_lin)
 err = np.zeros_like(xi_lin)
@@ -56,13 +56,13 @@ for i in range(len(R)):
     err[i]/=(np.pi**2*r**3)
     continue
 end = time.time()
-print "hankel LIN time:",end-start
+print "hankel LIN time: %.3f"%(end-start)
 
 #Now do the nonlinear part
 start = time.time()
 xi_nl = fastcorr.calc_corr(R,knl,pnl,N,h)
 end = time.time()
-print "fastcorr NL time:",end-start
+print "fastcorr NL time: %.3f"%(end-start)
 
 xi_nl2 = np.zeros_like(xi_nl)
 err = np.zeros_like(xi_nl)
@@ -77,7 +77,7 @@ for i in range(len(R)):
     err[i]/=(np.pi**2*r**3)
     continue
 end = time.time()
-print "hankel NL time:",end-start
+print "hankel NL time: %.3f"%(end-start)
 
 plt.loglog(R,R**2*xi_lin,label=r"$\xi_{\rm lin}$ fastcorr")
 plt.loglog(R,R**2*xi_lin2,label=r"$\xi_{\rm lin}$ hankel")
@@ -86,6 +86,6 @@ plt.loglog(R,R**2*xi_nl2,ls="--",label=r"$\xi_{\rm nl}$ hankel")
 plt.xlabel(r"$R\ [{\rm Mpc}/h]$")
 plt.ylabel(r"$R^2\xi(R)\ [{\rm Mpc^2}/h^2]$")
 plt.ylim(.1,200)
-plt.legend(loc="lower right")
+plt.legend(loc="lower left").get_frame().set_alpha(0.5)
 plt.subplots_adjust(bottom=0.15)
 plt.show()

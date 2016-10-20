@@ -12,8 +12,11 @@ hankel transformation algorithms.
 
 Dependencies
 ------------
-numpy
-GSL
+* numpy
+* GSL
+
+You must have a path setup to to gsl/include called GSLI and
+a path to gsl/lib called GSLL.
 
 Installation
 ------------
