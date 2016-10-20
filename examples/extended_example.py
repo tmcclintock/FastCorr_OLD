@@ -26,7 +26,7 @@ print "fastcorr xi2 time: %f"%(end-start)
 start = time.time()
 xi4_nl = fastcorr.calc_xi4(R,knl,pnl,N,h)
 end = time.time()
-print "fastcorr xi2 time: %f"%(end-start)
+print "fastcorr xi4 time: %f"%(end-start)
 
 #Properly scale the different parts
 b,f = 2.0,0.75
