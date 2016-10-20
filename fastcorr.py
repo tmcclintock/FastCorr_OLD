@@ -48,3 +48,68 @@ def calc_corr(R,k,P,N=300,h=0.005):
         raise Exception("Error message recieved in fastcorr.py")
     #Return the correlation function. It is of length len(R)
     return xi
+
+def calc_xi2(R,k,P,N=300,h=0.005):
+    cclib = cdll.LoadLibrary(sopath)
+    ccc = cclib.calc_xi2
+    ccc.restype = c_int
+
+    """
+    Argument order:
+    k,P,Nk,
+    R,xi2,NR,
+    N,h
+    """
+    Nk = len(k)
+    if Nk != len(P):
+        raise Exception("len(k)!=len(P)")
+    NR = len(R)
+    ccc.argtypes=[POINTER(c_double),POINTER(c_double),c_int,\
+                  POINTER(c_double),POINTER(c_double),c_int,\
+                  c_int,c_double]
+    k_in = k.ctypes.data_as(POINTER(c_double))
+    P_in = P.ctypes.data_as(POINTER(c_double))
+    R_in = R.ctypes.data_as(POINTER(c_double))
+
+    xi2 = np.zeros(NR)
+    xi2_in = xi2.ctypes.data_as(POINTER(c_double))
+
+    result = ccc(k_in,P_in,Nk,R_in,xi2_in,NR,N,h)
+
+    if result != 0:
+        raise Exception("Error message recieved in fastcorr.py")
+    #Return the correlation function. It is of length len(R)
+    return xi2
+
+
+def calc_xi4(R,k,P,N=300,h=0.005):
+    cclib = cdll.LoadLibrary(sopath)
+    ccc = cclib.calc_xi4
+    ccc.restype = c_int
+
+    """
+    Argument order:
+    k,P,Nk,
+    R,xi4,NR,
+    N,h
+    """
+    Nk = len(k)
+    if Nk != len(P):
+        raise Exception("len(k)!=len(P)")
+    NR = len(R)
+    ccc.argtypes=[POINTER(c_double),POINTER(c_double),c_int,\
+                  POINTER(c_double),POINTER(c_double),c_int,\
+                  c_int,c_double]
+    k_in = k.ctypes.data_as(POINTER(c_double))
+    P_in = P.ctypes.data_as(POINTER(c_double))
+    R_in = R.ctypes.data_as(POINTER(c_double))
+
+    xi4 = np.zeros(NR)
+    xi4_in = xi4.ctypes.data_as(POINTER(c_double))
+
+    result = ccc(k_in,P_in,Nk,R_in,xi4_in,NR,N,h)
+
+    if result != 0:
+        raise Exception("Error message recieved in fastcorr.py")
+    #Return the correlation function. It is of length len(R)
+    return xi4

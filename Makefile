@@ -1,4 +1,4 @@
-OBJS = fastcorr.o
+OBJS = fastcorr.o higher_orders.o
 
 CC = gcc
 ifdef notshared
@@ -13,8 +13,8 @@ CFLAGS = -fPIC
 OFLAGS = -shared
 endif
 
-INCL = -I/${GSLI} -O3
-LIBS = -lgsl -lgslcblas -L/${GSLL} -lm -O3
+INCL = -I${GSLI} -O3
+LIBS = -lgsl -lgslcblas -L${GSLL} -lm -O3
 .SUFFIXES : .c .o
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCL) -c $< -o $@
