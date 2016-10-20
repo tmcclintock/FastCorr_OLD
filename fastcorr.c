@@ -234,7 +234,7 @@ double calc_xi4_at_R(double R,double*k,double*P,
   dpsi: precalculated function dpsi(x) (see Ogata et al. 2005) (output)
  */
 int calc_j2_domain(int N,double h,double*x,double*w,double*j2,double*dpsi){
-  double zero,t,psi,PIsinht,x2,cosx,sinx;
+  double zero,t,psi,PIsinht,z,z2,cosz,sinz;
   const double nu = 5./2.;
   const double PI_h = PI/h;
   const double PI_2 = PI/2.;
@@ -248,12 +248,12 @@ int calc_j2_domain(int N,double h,double*x,double*w,double*j2,double*dpsi){
     PIsinht = PI*sinh(t);
     dpsi[i] = (PI*t*cosh(t)+sinh(PIsinht))/(1.0+cosh(PIsinht));
     if (dpsi[i]!=dpsi[i]) dpsi[i]=1.0;
-    x2 = x[i]*x[i];
-    cosx = cos(x[i]);
-    sinx = sin(x[i]);
-    //w[i] = gsl_sf_bessel_Ynu(nu,x[i])/gsl_sf_bessel_Jnu(nu+1.0,x[i]);
-    w[i] = ((-3+x2)*cosx - 3*x[i]*sinx)*x[i]/
-      ((15-6*x2)*sinx+(x2-15.)*x[i]*cosx);
+    z=PI*zero;
+    z2 = z*z;
+    cosz = cos(z);sinz = sin(z);
+    //w[i] = gsl_sf_bessel_Ynu(nu,z)/gsl_sf_bessel_Jnu(nu+1.0,z);
+    w[i] = ((-3+z2)*cosz - 3*z*sinz)*z/
+      ((15-6*z2)*sinz+(z2-15.)*z*cosz);
   }
   return 0;
 }
@@ -270,7 +270,7 @@ int calc_j2_domain(int N,double h,double*x,double*w,double*j2,double*dpsi){
   dpsi: precalculated function dpsi(x) (see Ogata et al. 2005) (output)
  */
 int calc_j4_domain(int N,double h,double*x,double*w,double*j4,double*dpsi){
-  double zero,t,psi,PIsinht,x2,cosx,sinx;
+  double zero,t,psi,PIsinht,z;
   const double nu = 9./2.;
   const double PI_h = PI/h;
   const double PI_2 = PI/2.;
@@ -284,7 +284,8 @@ int calc_j4_domain(int N,double h,double*x,double*w,double*j4,double*dpsi){
     PIsinht = PI*sinh(t);
     dpsi[i] = (PI*t*cosh(t)+sinh(PIsinht))/(1.0+cosh(PIsinht));
     if (dpsi[i]!=dpsi[i]) dpsi[i]=1.0;
-    w[i] = gsl_sf_bessel_Ynu(nu,x[i])/gsl_sf_bessel_Jnu(nu+1.0,x[i]);
+    z = zero*PI;
+    w[i] = gsl_sf_bessel_Ynu(nu,z)/gsl_sf_bessel_Jnu(nu+1.0,z);
   }
   return 0;
 }
