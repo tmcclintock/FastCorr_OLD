@@ -17,7 +17,7 @@ P: power spectrum - units in either (h/Mpc)^3 or Mpc^-3
 N: number of roots of j_0 to evaluate
 h: step size for the quadrature routine
 """
-def calc_corr(R,k,P,N=300,h=0.005):
+def calc_corr(R,k,P,N=600,h=0.002):
     cclib = cdll.LoadLibrary(sopath)
     ccc = cclib.calc_corr
     ccc.restype = c_int
