@@ -6,9 +6,11 @@ The implementation is based off of the Ogata 2005 and its implementation
 in the hankel.py package written by Steven Murray. This calculation
 takes advantage of the fact that the matter-matter correlation
 function is a hankel transformation of the power spectrum
-and the j_0 spherical bessel function. This allows the roots and
-weights to be computed more quickly than in the generalized
-hankel transformation algorithms.
+times the j_0 spherical bessel function. This code achieves
+a speed up by calculating the roots and
+weights more quickly than in the generalized
+hankel transformation algorithms, since they can
+be written purely as sin(x) and cos(x) calls.
 
 Dependencies
 ------------
