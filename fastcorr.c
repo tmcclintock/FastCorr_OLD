@@ -63,7 +63,7 @@ double calc_corr_at_R(double R,double*k,double*P,
     sum += f*sinx[i]*dpsi[i];
   }
 
-  return sum/(R*R*R*PI);
+  return sum/(R*R*R*PI*2);
 }
 
 /*
