@@ -70,4 +70,6 @@ If you care about probing **large scales** you need to make
 h smaller. If you care about smoothness on **all scales** then
 you need to need to increase N. Note that the performance
 of the algorithm scales linearly with N and is largely 
-unaffected by h.
+unaffected by h. Furthermore, it (anecdotally) appears
+that when N and h are powers of 2 the algorithm performs
+slightly better.
