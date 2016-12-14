@@ -18,6 +18,9 @@ N: number of roots of j_0 to evaluate
 h: step size for the quadrature routine
 """
 def calc_corr(R,k,P,N=600,h=0.002):
+    R = R.copy()
+    k = k.copy()
+    P = P.copy()
     cclib = cdll.LoadLibrary(sopath)
     ccc = cclib.calc_corr
     ccc.restype = c_int
