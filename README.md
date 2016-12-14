@@ -51,3 +51,23 @@ approximately 0.05 seconds each.
 Running the extended_example.py code produces the following
 
 ![alt text](https://github.com/tmcclintock/FastCorr/blob/master/figures/figure_1.png)
+
+Accuracy
+---------
+The algorith employed by this module contains two variables that 
+control the precision: the number of Bessel function roots (N),
+and the step size (h). N will control the number of integrand 
+evaluations, while h controls how far out in k-space the algorithm
+extends to.
+
+The **default** behavior of the module is tuned such that
+it reproduces the matter-matter correlation function
+from CAMB reproduced by Eduardo Rozo to better than 1%.
+While still running less than 0.05 seconds for one thousand
+radii.
+
+If you care about probing **large scales** you need to make
+h smaller. If you care about smoothness on **all scales** then
+you need to need to increase N. Note that the performance
+of the algorithm scales linearly with N and is largely 
+unaffected by h.
