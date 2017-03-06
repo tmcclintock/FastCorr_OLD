@@ -18,6 +18,20 @@ N: number of roots of j_0 to evaluate
 h: step size for the quadrature routine
 """
 def calc_corr(R,k,P,N=2**10,h=2**-10):
+    """Calculate the 3D matter correlation function.
+
+    Args:
+        R (array_like): Radial distances.
+        k (array_like): Wavenumbers.
+        P (array_like): Matter power spectrum.
+        N (int): Number of quadrature roots; default is 2^10.
+        h (float): Step size of quadrature rule; default is 2^-10.
+
+    Returns:
+    TODO
+
+    """
+
     R = R.copy()
     k = k.copy()
     P = P.copy()
