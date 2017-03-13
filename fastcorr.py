@@ -1,22 +1,17 @@
 """
-This is a python wrapper that calls the calc_corr() c function.
-This interfaces through c_types so that the user
-doesn't have to.
+This is fastcorr. It calculates the matter correlation function quickly.
+It can also calculate terms in RSD models.
+
+It interfaces with the compiled fastcorr.c using ctypes.
+
+Compile by running `python setup.py' in this directory.
 """
 import numpy as np
 import os, inspect
 from ctypes import c_double,c_int,POINTER,cdll
+#Find the library no matter where we are.
 sopath = os.path.join(os.path.dirname(__file__),"_fastcorr.so")
 
-"""
-Calculate the correlation function.
-
-R: tangential radial distance - units in either Mpc/h or Mpc
-k: wavenumber - units in either h/Mpc or Mpc^-1
-P: power spectrum - units in either (h/Mpc)^3 or Mpc^-3
-N: number of roots of j_0 to evaluate
-h: step size for the quadrature routine
-"""
 def calc_corr(R,k,P,N=2**10,h=2**-10):
     """Calculate the 3D matter correlation function.
 
