@@ -21,9 +21,9 @@ def calc_corr(R,k,P,N=2**10,h=2**-10):
     """Calculate the 3D matter correlation function.
 
     Args:
-        R (array_like): Radial distances.
-        k (array_like): Wavenumbers.
-        P (array_like): Matter power spectrum.
+        R (array_like): Radial distances; Mpc/h or Mpc.
+        k (array_like): Wavenumbers; h/Mpc or Mpc^-1.
+        P (array_like): Matter power spectrum; (h/Mpc)^3 or Mpc^-3.
         N (int): Number of quadrature roots; default is 2^10.
         h (float): Step size of quadrature rule; default is 2^-10.
 
@@ -40,7 +40,7 @@ def calc_corr(R,k,P,N=2**10,h=2**-10):
     ccc.restype = c_int
 
     """
-    Argument order:
+    Argument order for the c code:
     k,P,Nk,
     R,xi,NR,
     N,h
@@ -66,13 +66,26 @@ def calc_corr(R,k,P,N=2**10,h=2**-10):
     #Return the correlation function. It is of length len(R)
     return xi
 
-def calc_xi2(R,k,P,N=300,h=0.005):
+def calc_xi2(R,k,P,N=2**10,h=2**-10):
+    """Calculate the integral of P and j_2, for use in RSD calculations.
+
+    Args:
+        R (array_like): Radial distances; Mpc/h or Mpc.
+        k (array_like): Wavenumbers; h/Mpc or Mpc^-1.
+        P (array_like): Matter power spectrum; (h/Mpc)^3 or Mpc^-3.
+        N (int): Number of quadrature roots; default is 2^10.
+        h (float): Step size of quadrature rule; default is 2^-10.
+
+    Returns:
+        xi_2 (array_like): First perturbation for RSD.
+
+    """
     cclib = cdll.LoadLibrary(sopath)
     ccc = cclib.calc_xi2
     ccc.restype = c_int
 
     """
-    Argument order:
+    Argument order for c code:
     k,P,Nk,
     R,xi2,NR,
     N,h
@@ -95,17 +108,29 @@ def calc_xi2(R,k,P,N=300,h=0.005):
 
     if result != 0:
         raise Exception("Error message recieved in fastcorr.py")
-    #Return the correlation function. It is of length len(R)
     return xi2
 
 
-def calc_xi4(R,k,P,N=300,h=0.005):
+def calc_xi4(R,k,P,N=2**10,h=2**-10):
+    """Calculate the integral of P and j_4, for use in RSD calculations.
+
+    Args:
+        R (array_like): Radial distances; Mpc/h or Mpc.
+        k (array_like): Wavenumbers; h/Mpc or Mpc^-1.
+        P (array_like): Matter power spectrum; (h/Mpc)^3 or Mpc^-3.
+        N (int): Number of quadrature roots; default is 2^10.
+        h (float): Step size of quadrature rule; default is 2^-10.
+
+    Returns:
+        xi_4 (array_like): Second perturbation for RSD.
+
+    """
     cclib = cdll.LoadLibrary(sopath)
     ccc = cclib.calc_xi4
     ccc.restype = c_int
 
     """
-    Argument order:
+    Argument order for c code:
     k,P,Nk,
     R,xi4,NR,
     N,h
@@ -128,5 +153,4 @@ def calc_xi4(R,k,P,N=300,h=0.005):
 
     if result != 0:
         raise Exception("Error message recieved in fastcorr.py")
-    #Return the correlation function. It is of length len(R)
     return xi4
