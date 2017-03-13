@@ -28,7 +28,7 @@ def calc_corr(R,k,P,N=2**10,h=2**-10):
         h (float): Step size of quadrature rule; default is 2^-10.
 
     Returns:
-    TODO
+        xi (array_like): Matter correlation function.
 
     """
 
