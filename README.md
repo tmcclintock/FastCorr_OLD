@@ -1,5 +1,8 @@
 FastCorr
 ========
+
+**NOTE: This repository has been superceded by [the new FastCorr](https://github.com/tmcclintock/FastCorr).**
+
 This is a fast implementation of a j_0 spherical hankel transform 
 in order to create matter-matter correlation functions from a power spectrum.
 The implementation is based off of the Ogata 2005 and its implementation
